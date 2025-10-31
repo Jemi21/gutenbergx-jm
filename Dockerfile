@@ -4,7 +4,8 @@ FROM php:8.1-apache
 # Install system dependencies
 RUN apt-get update \
  && apt-get install -y --no-install-recommends libpq-dev git zip unzip \
- && docker-php-ext-install pdo pdo_pgsql \
+ && docker-php-ext-configure pdo_pgsql --with-pgsql=/usr/local/pgsql \
+ && docker-php-ext-install pdo_pgsql pgsql \
  && a2enmod rewrite \
  && rm -rf /var/lib/apt/lists/*
 
