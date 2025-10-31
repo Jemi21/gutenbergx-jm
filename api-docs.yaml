@@ -1,0 +1,168 @@
+openapi: 3.0.0
+info:
+  title: 'Gutendex Books API'
+  description: 'Query Project Gutenberg books with filters and pagination'
+  version: 1.0.0
+servers:
+  -
+    url: /
+    description: 'Default server'
+paths:
+  /api/books:
+    get:
+      tags:
+        - Books
+      summary: 'Retrieve books with filters, sorted by downloads desc'
+      operationId: 9017a3fa89d6636329067c858b27a6fa
+      parameters:
+        -
+          name: ids
+          in: query
+          description: 'Comma-separated Gutenberg IDs'
+          required: false
+          schema:
+            type: string
+            example: '84,1342'
+        -
+          name: languages
+          in: query
+          description: 'Comma-separated language codes'
+          required: false
+          schema:
+            type: string
+            example: 'en,fr'
+        -
+          name: mime_type
+          in: query
+          description: 'Comma-separated mime-types or prefixes'
+          required: false
+          schema:
+            type: string
+            example: 'text/plain,application/epub+zip'
+        -
+          name: topic
+          in: query
+          description: 'Comma-separated topics (matches subjects or bookshelves, partial, case-insensitive)'
+          required: false
+          schema:
+            type: string
+            example: 'child,infant'
+        -
+          name: author
+          in: query
+          description: 'Comma-separated author name fragments (partial, case-insensitive)'
+          required: false
+          schema:
+            type: string
+            example: tolstoy
+        -
+          name: title
+          in: query
+          description: 'Title fragment (partial, case-insensitive)'
+          required: false
+          schema:
+            type: string
+            example: war
+        -
+          name: search
+          in: query
+          description: 'Space-separated words to match in title OR author names (case-insensitive)'
+          required: false
+          schema:
+            type: string
+            example: 'tolstoy war'
+        -
+          name: page
+          in: query
+          description: 'Page number (1-based)'
+          required: false
+          schema:
+            type: integer
+            default: 1
+            minimum: 1
+        -
+          name: limit
+          in: query
+          description: 'Items per page (max 25)'
+          required: false
+          schema:
+            type: integer
+            default: 25
+            maximum: 25
+        -
+          name: has_cover
+          in: query
+          description: 'Only books that have image/* format'
+          required: false
+          schema:
+            type: boolean
+            default: false
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  count:
+                    type: integer
+                  next:
+                    type: string
+                    nullable: true
+                  previous:
+                    type: string
+                    nullable: true
+                  results:
+                    type: array
+                    items:
+                      properties:
+                        id:
+                          description: 'Gutenberg ID'
+                          type: integer
+                        title:
+                          type: string
+                        authors:
+                          type: array
+                          items:
+                            properties:
+                              name:
+                                type: string
+                              birth_year:
+                                type: integer
+                                nullable: true
+                              death_year:
+                                type: integer
+                                nullable: true
+                            type: object
+                        genre:
+                          type: string
+                          nullable: true
+                        languages:
+                          type: array
+                          items:
+                            type: string
+                        subjects:
+                          type: array
+                          items:
+                            type: string
+                        bookshelves:
+                          type: array
+                          items:
+                            type: string
+                        downloads:
+                          type: integer
+                        download_links:
+                          type: array
+                          items:
+                            properties:
+                              mime_type:
+                                type: string
+                              url:
+                                type: string
+                            type: object
+                      type: object
+                type: object
+tags:
+  -
+    name: Books
+    description: Books

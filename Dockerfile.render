@@ -16,5 +16,5 @@ RUN composer install --no-interaction --prefer-dist --no-ansi \
 
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
 
-EXPOSE 80
-CMD ["apache2-foreground"]
+EXPOSE $PORT
+CMD ["bash", "-c", "sed -i 's/80/${PORT}/g' /etc/apache2/ports.conf && apache2-foreground"]
