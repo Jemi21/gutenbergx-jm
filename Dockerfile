@@ -26,7 +26,14 @@ ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
 
 # Update Apache configuration
 RUN sed -ri 's!/var/www/html!/var/www/html/public!g' /etc/apache2/sites-available/000-default.conf \
- && sed -ri 's!/var/www/!/var/www/html/public!g' /etc/apache2/apache2.conf
+ && sed -ri 's!/var/www/!/var/www/html/public!g' /etc/apache2/apache2.conf \
+ && echo '<Directory /var/www/html/public>\n\
+    AllowOverride All\n\
+    Require all granted\n\
+</Directory>' >> /etc/apache2/apache2.conf
 
-# IMPORTANT: change both ports.conf and VirtualHost to use $PORT
+# Expose the port
+EXPOSE 80
+
+# Start Apache with dynamic Render port
 CMD ["bash", "-c", "sed -i 's/80/${PORT}/g' /etc/apache2/ports.conf && sed -i 's/*:80/*:${PORT}/g' /etc/apache2/sites-available/000-default.conf && apache2-foreground"]
