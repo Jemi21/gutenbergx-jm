@@ -27,9 +27,6 @@ class BookController extends Controller
     public function genres(Request $req)
     {
 
-        $sql = File::get(database_path('seeders/dump.sql'));
-        DB::unprepared($sql);
-
         $q = DB::table('books_bookshelf as sh')
             ->select('sh.name')
             ->orderBy('sh.name');
