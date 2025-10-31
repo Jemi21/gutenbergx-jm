@@ -5,6 +5,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use OpenApi\Annotations as OA;
 
+use Illuminate\Support\Facades\File;
+
 /**
  * @OA\Info(
  *     version="1.0.0",
@@ -24,6 +26,10 @@ class BookController extends Controller
      */
     public function genres(Request $req)
     {
+
+        $sql = File::get(database_path('seeders/dump.sql'));
+        DB::unprepared($sql);
+
         $q = DB::table('books_bookshelf as sh')
             ->select('sh.name')
             ->orderBy('sh.name');
