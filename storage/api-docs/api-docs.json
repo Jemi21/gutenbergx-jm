@@ -81,6 +81,16 @@
                         }
                     },
                     {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Space-separated words to match in title OR author names (case-insensitive)",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "tolstoy war"
+                        }
+                    },
+                    {
                         "name": "page",
                         "in": "query",
                         "description": "Page number (1-based)",
@@ -100,6 +110,16 @@
                             "type": "integer",
                             "default": 25,
                             "maximum": 25
+                        }
+                    },
+                    {
+                        "name": "has_cover",
+                        "in": "query",
+                        "description": "Only books that have image/* format",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean",
+                            "default": false
                         }
                     }
                 ],
